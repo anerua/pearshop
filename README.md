@@ -1,0 +1,1 @@
+# Pearshop - PearMonie Fullstack Engineer Assessment - E-Commerce Platform
