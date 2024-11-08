@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .views import RegisterUserAPIView, ListCreateProductView, GetUpdateDeleteProductView
+from .views import *
 
 urlpatterns = [
     path('register', RegisterUserAPIView.as_view(), name='register_user'),
@@ -13,6 +13,8 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('product/<int:pk>', GetUpdateDeleteProductView.as_view(), name='get_update_or_delete_product'),
-    path('products', ListCreateProductView.as_view(), name='list_products'),
-    path('product', ListCreateProductView.as_view(), name='create_product'),
+    path('product', ListCreateProductView.as_view(), name='list_or_create_product'),
+
+    path('order-item/<int:pk>', GetOrderItemView.as_view(), name='get_order_item'),
+    path('order-item', ListCreateOrderItemView.as_view(), name='list_or_create_order_item'),
 ]

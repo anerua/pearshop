@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
-from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView
 
-from .models import Product
-from .serializers import RegisterUserSerializer, ProductSerializer
+from .models import *
+from .serializers import *
 
 
 class RegisterUserAPIView(CreateAPIView):
@@ -21,3 +21,15 @@ class GetUpdateDeleteProductView(RetrieveUpdateDestroyAPIView):
 
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+
+
+class ListCreateOrderItemView(ListCreateAPIView):
+
+    serializer_class = OrderItemSerializer
+    queryset = OrderItem.objects.all()
+
+
+class GetOrderItemView(RetrieveAPIView):
+
+    serializer_class = OrderItemSerializer
+    queryset = OrderItem.objects.all()
