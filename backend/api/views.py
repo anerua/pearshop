@@ -33,3 +33,15 @@ class GetOrderItemView(RetrieveAPIView):
 
     serializer_class = OrderItemSerializer
     queryset = OrderItem.objects.all()
+
+
+class ListCreateOrderView(ListCreateAPIView):
+
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+
+
+class GetOrderView(RetrieveAPIView):
+
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()

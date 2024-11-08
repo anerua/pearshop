@@ -17,4 +17,7 @@ urlpatterns = [
 
     path('order-item/<int:pk>', GetOrderItemView.as_view(), name='get_order_item'),
     path('order-item', ListCreateOrderItemView.as_view(), name='list_or_create_order_item'),
+
+    path('order/<int:pk>', GetOrderView.as_view(), name='get_order'),
+    path('order', ListCreateOrderView.as_view(), name='list_or_create_order'),
 ]
