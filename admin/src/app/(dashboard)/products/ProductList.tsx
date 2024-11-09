@@ -83,7 +83,7 @@ export default function ProductList({
           <tbody>
             {products.map((product) => (
               <tr key={product.id}>
-                <td>{"#1234"}</td>
+                <td>{product.id}</td>
                 <td>{product.name}</td>
                 <td>&#x20A6;{product.price}</td>
                 <td>
