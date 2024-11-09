@@ -29,7 +29,7 @@ export default function ProductForm({
     if (!formData.price) newErrors.price = "Price is required";
     if (Number(formData.price) <= 0)
       newErrors.price = "Price must be greater than 0";
-    if (!formData.image) newErrors.image = "Image is required";
+    if (!formData.image) newErrors.image = "Image URL is required";
     return newErrors;
   };
 
@@ -88,7 +88,7 @@ export default function ProductForm({
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>Image</label>
+            <label className={styles.label}>Image URL</label>
             <input
               type="url"
               className={styles.input}
