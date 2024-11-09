@@ -27,6 +27,11 @@ export default function ProductList({
     setIsFormOpen(true);
   };
 
+  const handleEdit = (product: Product) => {
+    setSelectedProduct(product);
+    setIsFormOpen(true);
+  };
+
   const handleSubmit = async (
     data: Omit<Product, "id" | "created_at" | "updated_at">
   ) => {
@@ -83,7 +88,12 @@ export default function ProductList({
                 <td>&#x20A6;{product.price}</td>
                 <td>
                   <div className={styles.actions}>
-                    <button className="button button-primary">Edit</button>
+                    <button
+                      className="button button-primary"
+                      onClick={() => handleEdit(product)}
+                    >
+                      Edit
+                    </button>
                     <button
                       className="button button-danger"
                       onClick={() => handleDelete(product.id)}
