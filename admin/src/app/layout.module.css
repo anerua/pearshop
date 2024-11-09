@@ -1,0 +1,23 @@
+.layout {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .mainContent {
+    flex: 1;
+    padding: 24px;
+    margin-left: var(--sidebar-width);
+    background-color: var(--gray-100);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* Mobile styles */
+  @media (max-width: 768px) {
+    .mainContent {
+      margin-left: 0;
+      padding: 16px;
+      /* Add padding-top to account for mobile menu button */
+      padding-top: 64px;
+    }
+  }

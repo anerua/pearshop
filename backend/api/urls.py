@@ -11,6 +11,7 @@ urlpatterns = [
     path('register', RegisterUserAPIView.as_view(), name='register_user'),
     path('login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('check', CheckAuthView.as_view(), name='check_auth'),
 
     path('product/<int:pk>', GetUpdateDeleteProductView.as_view(), name='get_update_or_delete_product'),
     path('product', ListCreateProductView.as_view(), name='list_or_create_product'),

@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.permissions import BasePermission, IsAuthenticated, IsAdminUser, SAFE_METHODS
 
 from .models import *
@@ -15,6 +18,14 @@ class RegisterUserAPIView(CreateAPIView):
 
     serializer_class = RegisterUserSerializer
     queryset = User.objects.all()
+
+
+class CheckAuthView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({'message': 'Authenticated'}, status=status.HTTP_200_OK)
 
 
 class ListCreateProductView(ListCreateAPIView):
