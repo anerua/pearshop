@@ -26,20 +26,40 @@ class CartService {
     });
   }
 
-  Future<void> addToCart(int productId) async {
+  Future<void> addToCart(int productId, int quantity) async {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
       final response = await http.post(
-        Uri.parse('$baseUrl/cart/add/'),
+        Uri.parse('$baseUrl/order-item'),
         headers: {'Authorization': 'Bearer $token'},
-        body: {'product_id': productId.toString()},
+        body: {
+          'product_id': productId.toString(),
+          'quantity': quantity.toString()
+        },
       );
 
       if (response.statusCode == 401) {
         throw Exception('401 Authentication failed');
       }
-      if (response.statusCode != 200) {
+      if (response.statusCode != 201) {
         throw Exception('Failed to add to cart');
+      }
+    });
+  }
+
+  Future<void> removeFromCart(int productId) async {
+    return await _authService.authenticatedRequest(() async {
+      final token = await _authService.getAccessToken();
+      final response = await http.delete(
+        Uri.parse('$baseUrl/order-item/$productId'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 401) {
+        throw Exception('401 Authentication failed');
+      }
+      if (response.statusCode != 204) {
+        throw Exception('Failed to remove from cart');
       }
     });
   }

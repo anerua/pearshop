@@ -26,6 +26,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class OrderItemSerializer(serializers.ModelSerializer):
     total_price = serializers.IntegerField(read_only=True)
+    product_id = serializers.PrimaryKeyRelatedField(
+        source='product',
+        queryset=Product.objects.all(),
+        write_only=True
+    )
 
     class Meta:
         model = OrderItem

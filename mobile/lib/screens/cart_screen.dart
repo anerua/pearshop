@@ -52,21 +52,79 @@ class _CartScreenState extends State<CartScreen> {
                 Expanded(
                   child: ListView.builder(
                     itemCount: _cartItems.length,
-                    itemBuilder: (ctx, i) => Card(
-                      margin: EdgeInsets.all(8),
-                      child: ListTile(
-                        leading: Image.network(
-                          _cartItems[i].product.image ??
-                              'assets/images/placeholder.png',
-                          width: 50,
-                          errorBuilder: (ctx, error, _) =>
-                              Image.asset('assets/images/placeholder.png', width: 50),
+                    itemBuilder: (ctx, i) => Dismissible(  // swipe-to-delete
+                      key: Key(_cartItems[i].id.toString()),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.only(right: 20),
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
                         ),
-                        title: Text(_cartItems[i].product.name),
-                        subtitle: Text(
-                            '\$${_cartItems[i].product.price.toStringAsFixed(2)} x ${_cartItems[i].quantity}'),
-                        trailing: Text(
-                            '\$${(_cartItems[i].product.price * _cartItems[i].quantity).toStringAsFixed(2)}'),
+                      ),
+                      onDismissed: (direction) async {
+                        final removedItem = _cartItems[i];
+                        setState(() {
+                          _cartItems.removeAt(i);
+                        });
+                        try {
+                          await _cartService.removeFromCart(removedItem.id);
+                        } catch (e) {
+                          if (e.toString().contains('401')) {
+                            Navigator.of(context).pushReplacementNamed('/login');
+                          }
+                          setState(() {
+                            _cartItems.insert(i, removedItem);
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to remove item')),
+                          );
+                        }
+                      },
+                      child: Card(
+                        margin: EdgeInsets.all(8),
+                        child: ListTile(
+                          leading: Image.network(
+                            _cartItems[i].product.image ??
+                                'assets/images/placeholder.png',
+                            width: 50,
+                            errorBuilder: (ctx, error, _) =>
+                                Image.asset('assets/images/placeholder.png', width: 50),
+                          ),
+                          title: Text(_cartItems[i].product.name),
+                          subtitle: Text(
+                              '\$${_cartItems[i].product.price.toStringAsFixed(2)} x ${_cartItems[i].quantity}'),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '\$${(_cartItems[i].product.price * _cartItems[i].quantity).toStringAsFixed(2)}',
+                              ),
+                              SizedBox(width: 16),
+                              IconButton(
+                                icon: Icon(Icons.delete, color: Colors.red),
+                                onPressed: () async {
+                                  try {
+                                    setState(() => _isLoading = true);
+                                    await _cartService.removeFromCart(_cartItems[i].id);
+                                    await _loadCart(); // Refresh the cart
+                                  } catch (e) {
+                                    if (e.toString().contains('401')) {
+                                      Navigator.of(context).pushReplacementNamed('/login');
+                                    }
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('Failed to remove item')),
+                                    );
+                                  } finally {
+                                    setState(() => _isLoading = false);
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),

@@ -115,7 +115,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         child: Text('Add to Cart'),
                         onPressed: () async {
                           try {
-                            await _cartService.addToCart(_products[i].id);
+                            await _cartService.addToCart(_products[i].id, 1);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Added to cart')),
                             );

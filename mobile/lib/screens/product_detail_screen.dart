@@ -75,7 +75,7 @@ class ProductDetailScreen extends StatelessWidget {
                         child: Text('Add to Cart'),
                         onPressed: () async {
                           try {
-                            await _cartService.addToCart(product.id);
+                            await _cartService.addToCart(product.id, 1);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Added to cart')),
                             );
