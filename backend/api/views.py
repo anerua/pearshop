@@ -50,7 +50,7 @@ class ListCreateOrderItemView(ListCreateAPIView):
     def get_queryset(self):
         if self.request.user.is_staff:
             return OrderItem.objects.all()
-        return OrderItem.objects.filter(user=self.request.user)
+        return OrderItem.objects.filter(user=self.request.user, orderitem_orders=None)
     
     def perform_create(self, serializer):
         # Set the user to the authenticated user when creating a new order item
@@ -65,7 +65,7 @@ class GetUpdateDeleteOrderItemView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         if self.request.user.is_staff:
             return OrderItem.objects.all()
-        return OrderItem.objects.filter(user=self.request.user)
+        return OrderItem.objects.filter(user=self.request.user, orderitem_orders=None)
 
 
 class ListCreateOrderView(ListCreateAPIView):
