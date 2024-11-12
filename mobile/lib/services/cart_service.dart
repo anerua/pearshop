@@ -64,6 +64,26 @@ class CartService {
     });
   }
 
+  Future<void> updateQuantity(int productId, int quantity) async {
+    return await _authService.authenticatedRequest(() async {
+      final token = await _authService.getAccessToken();
+      final response = await http.patch(
+        Uri.parse('$baseUrl/order-item/$productId'),
+        headers: {'Authorization': 'Bearer $token'},
+        body: {
+          'quantity': quantity.toString()
+        },
+      );
+
+      if (response.statusCode == 401) {
+        throw Exception('401 Authentication failed');
+      }
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update quantity');
+      }
+    });
+  }
+
   Future<void> checkout() async {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
