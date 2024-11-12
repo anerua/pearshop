@@ -46,14 +46,26 @@ class ListCreateOrderItemView(ListCreateAPIView):
 
     permission_classes = [IsAuthenticated]
     serializer_class = OrderItemSerializer
-    queryset = OrderItem.objects.all()
+    
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return OrderItem.objects.all()
+        return OrderItem.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # Set the user to the authenticated user when creating a new order item
+        serializer.save(user=self.request.user)
 
 
-class GetOrderItemView(RetrieveAPIView):
+class GetUpdateDeleteOrderItemView(RetrieveUpdateDestroyAPIView):
 
     permission_classes = [IsAuthenticated]
     serializer_class = OrderItemSerializer
-    queryset = OrderItem.objects.all()
+    
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return OrderItem.objects.all()
+        return OrderItem.objects.filter(user=self.request.user)
 
 
 class ListCreateOrderView(ListCreateAPIView):

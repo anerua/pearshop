@@ -16,7 +16,7 @@ urlpatterns = [
     path('product/<int:pk>', GetUpdateDeleteProductView.as_view(), name='get_update_or_delete_product'),
     path('product', ListCreateProductView.as_view(), name='list_or_create_product'),
 
-    path('order-item/<int:pk>', GetOrderItemView.as_view(), name='get_order_item'),
+    path('order-item/<int:pk>', GetUpdateDeleteOrderItemView.as_view(), name='get_update_or_delete_order_item'),
     path('order-item', ListCreateOrderItemView.as_view(), name='list_or_create_order_item'),
 
     path('order/<int:pk>', GetOrderView.as_view(), name='get_order'),
