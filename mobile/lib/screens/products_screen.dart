@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../models/product.dart';
 import '../../services/product_service.dart';
 import '../../services/cart_service.dart';
@@ -137,7 +138,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text('${_products[i].price.toStringAsFixed(2)} NGN'),
+                      Text('${NumberFormat('#,##0.00').format(_products[i].price)} NGN'),
                       ElevatedButton(
                         child: Text('Add to Cart'),
                         onPressed: () async {

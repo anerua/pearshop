@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../models/cart_item.dart';
 import '../../services/cart_service.dart';
 
@@ -148,7 +149,7 @@ class _CartScreenState extends State<CartScreen> {
                           subtitle: Row(
                             children: [
                               Text(
-                                  '${_cartItems[i].product.price.toStringAsFixed(2)} NGN'),
+                                  '${NumberFormat('#,##0.00').format(_cartItems[i].product.price)} NGN'),
                               Spacer(),
                               // Quantity controls
                               IconButton(
@@ -214,7 +215,7 @@ class _CartScreenState extends State<CartScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                '${(_cartItems[i].product.price * _cartItems[i].quantity).toStringAsFixed(2)} NGN',
+                                '${NumberFormat('#,##0.00').format(_cartItems[i].product.price * _cartItems[i].quantity)} NGN',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -265,7 +266,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                           Text(
-                            '${totalAmount.toStringAsFixed(2)} NGN',
+                            '${NumberFormat('#,##0.00').format(totalAmount)} NGN',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

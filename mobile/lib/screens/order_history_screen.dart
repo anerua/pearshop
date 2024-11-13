@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/order.dart';
 import '../services/order_service.dart';
 
@@ -62,7 +63,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                               style: TextStyle(fontSize: 12),
                             ),
                             Text(
-                              'Total: ${_orders[i].total.toStringAsFixed(2)} NGN',
+                              'Total: ${NumberFormat('#,##0.00').format(_orders[i].total)} NGN',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -90,9 +91,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                       dense: true,
                                       title: Text(item.product.name),
                                       subtitle: Text(
-                                          'Quantity: ${item.quantity} x ${item.product.price.toStringAsFixed(2)} NGN'),
+                                          'Quantity: ${item.quantity} x ${NumberFormat('#,##0.00').format(item.product.price)} NGN'),
                                       trailing: Text(
-                                        '${(item.quantity * item.product.price).toStringAsFixed(2)} NGN',
+                                        '${NumberFormat('#,##0.00').format(item.quantity * item.product.price)} NGN',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),

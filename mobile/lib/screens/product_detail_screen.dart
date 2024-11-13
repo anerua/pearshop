@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../models/product.dart';
 import '../../services/product_service.dart';
 import '../../services/cart_service.dart';
@@ -62,7 +63,7 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        '${product.price.toStringAsFixed(2)} NGN',
+                        '${NumberFormat('#,##0.00').format(product.price)} NGN',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.green,
