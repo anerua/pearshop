@@ -19,7 +19,7 @@ export default function ProductForm({
     name: product?.name || "",
     price: product?.price || "",
     image: product?.image || "",
-    // description: product?.description || "",
+    description: product?.description || "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -43,6 +43,7 @@ export default function ProductForm({
           name: formData.name,
           price: Number(formData.price),
           image: formData.image,
+          description: formData.description,
         });
         onClose();
       } catch (error) {
@@ -100,7 +101,7 @@ export default function ProductForm({
             {errors.image && <span className={styles.error}>{errors.image}</span>}
           </div>
 
-          {/* <div className={styles.formGroup}>
+          <div className={styles.formGroup}>
             <label className={styles.label}>Description</label>
             <textarea
               className={styles.textarea}
@@ -109,7 +110,7 @@ export default function ProductForm({
                 setFormData({ ...formData, description: e.target.value })
               }
             />
-          </div> */}
+          </div>
 
           <div className={styles.actions}>
             <button type="button" className="button" onClick={onClose}>

@@ -20,7 +20,7 @@ export async function apiService(
     defaultHeaders['Authorization'] = `Bearer ${accessToken}`;
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const response = await fetch(`${API_URL}${endpoint}/`, {
     ...options,
     headers: {
       ...defaultHeaders,
@@ -28,6 +28,7 @@ export async function apiService(
     },
   });
 
+  // If the response fails with 401, try to refresh the token
   if (response.status === 401) {
     const refreshToken = cookieStore.get('refreshToken')?.value;
 
@@ -55,7 +56,7 @@ export async function apiService(
           });
           
           // Retry the original request with the new token
-          return fetch(`${API_URL}${endpoint}`, {
+          return fetch(`${API_URL}${endpoint}/`, {
             ...options,
             headers: {
               ...defaultHeaders,
