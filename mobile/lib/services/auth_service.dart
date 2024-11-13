@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static const String baseUrl = 'http://localhost:8000/api';
+  static String get baseUrl => dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api';
   static const String accessTokenKey = 'access_token';
   static const String refreshTokenKey = 'refresh_token';
 

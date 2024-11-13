@@ -147,67 +147,87 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           title: Text(_cartItems[i].product.name),
                           subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                  '${NumberFormat('#,##0.00').format(_cartItems[i].product.price)} NGN'),
-                              Spacer(),
+                              Flexible(
+                                child: Text(
+                                  '${NumberFormat('#,##0.00').format(_cartItems[i].product.price)} NGN',
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                               // Quantity controls
-                              IconButton(
-                                icon: Icon(Icons.remove_circle_outline),
-                                onPressed: _cartItems[i].quantity > 1
-                                    ? () async {
-                                        try {
-                                          setState(() => _isLoading = true);
-                                          await _cartService.updateQuantity(
-                                            _cartItems[i].id,
-                                            _cartItems[i].quantity - 1,
-                                          );
-                                          await _loadCart(); // Refresh the cart
-                                        } catch (e) {
-                                          if (e.toString().contains('401')) {
-                                            Navigator.of(context)
-                                                .pushReplacementNamed('/login');
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+                                    constraints: BoxConstraints(),
+                                    icon: Icon(Icons.remove_circle_outline),
+                                    onPressed: _cartItems[i].quantity > 1
+                                        ? () async {
+                                            try {
+                                              setState(() => _isLoading = true);
+                                              await _cartService.updateQuantity(
+                                                _cartItems[i].id,
+                                                _cartItems[i].quantity - 1,
+                                              );
+                                              await _loadCart(); // Refresh the cart
+                                            } catch (e) {
+                                              if (e
+                                                  .toString()
+                                                  .contains('401')) {
+                                                Navigator.of(context)
+                                                    .pushReplacementNamed(
+                                                        '/login');
+                                              }
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        'Failed to update quantity')),
+                                              );
+                                            } finally {
+                                              setState(
+                                                  () => _isLoading = false);
+                                            }
                                           }
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                                content: Text(
-                                                    'Failed to update quantity')),
-                                          );
-                                        } finally {
-                                          setState(() => _isLoading = false);
+                                        : null, // Disable if quantity is 1
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    '${_cartItems[i].quantity}',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  SizedBox(width: 8),
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+                                    constraints: BoxConstraints(),
+                                    icon: Icon(Icons.add_circle_outline),
+                                    onPressed: () async {
+                                      try {
+                                        setState(() => _isLoading = true);
+                                        await _cartService.updateQuantity(
+                                          _cartItems[i].id,
+                                          _cartItems[i].quantity + 1,
+                                        );
+                                        await _loadCart(); // Refresh the cart
+                                      } catch (e) {
+                                        if (e.toString().contains('401')) {
+                                          Navigator.of(context)
+                                              .pushReplacementNamed('/login');
                                         }
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  'Failed to update quantity')),
+                                        );
+                                      } finally {
+                                        setState(() => _isLoading = false);
                                       }
-                                    : null, // Disable if quantity is 1
-                              ),
-                              Text(
-                                '${_cartItems[i].quantity}',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.add_circle_outline),
-                                onPressed: () async {
-                                  try {
-                                    setState(() => _isLoading = true);
-                                    await _cartService.updateQuantity(
-                                      _cartItems[i].id,
-                                      _cartItems[i].quantity + 1,
-                                    );
-                                    await _loadCart(); // Refresh the cart
-                                  } catch (e) {
-                                    if (e.toString().contains('401')) {
-                                      Navigator.of(context)
-                                          .pushReplacementNamed('/login');
-                                    }
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'Failed to update quantity')),
-                                    );
-                                  } finally {
-                                    setState(() => _isLoading = false);
-                                  }
-                                },
+                                    },
+                                  ),
+                                ],
                               ),
                             ],
                           ),

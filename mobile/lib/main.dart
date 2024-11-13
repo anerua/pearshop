@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'screens/order_history_screen.dart';
 import 'screens/login_screen.dart';
@@ -6,7 +7,8 @@ import 'screens/product_detail_screen.dart';
 import 'screens/cart_screen.dart';
 import 'services/auth_service.dart';
 
-void main() {
+void main() async{
+  await dotenv.load();
   runApp(MyApp());
 }
 

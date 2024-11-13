@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import '../models/product.dart';
 import 'auth_service.dart';
 
 class ProductService {
-  static const String baseUrl = 'http://localhost:8000/api';
+  static String get baseUrl => dotenv.env['API_BASE_URL'] ?? 'http://localhost:8000/api';
   final AuthService _authService = AuthService();
 
   Future<List<Product>> getProducts() async {
