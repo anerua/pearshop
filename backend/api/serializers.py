@@ -57,20 +57,31 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    order_items = OrderItemSerializer(many=True, read_only=True)
     total_price = serializers.IntegerField(read_only=True)
+    order_item_ids = serializers.PrimaryKeyRelatedField(
+        source='order_items',
+        queryset=OrderItem.objects.all(),
+        many=True,
+        write_only=True
+    )
 
     class Meta:
         model = Order
-        fields = ["id", "user", "delivery_address", "order_items", "total_price", "created_at", "updated_at"]
+        fields = ["id", "user", "delivery_address", "order_items", "order_item_ids", "total_price", "created_at", "updated_at"]
         read_only_fields = ["total_price", "created_at", "updated_at"]
         depth = 2
 
     def create(self, validated_data):
-        # Create the order first
+        # Pop order_items from validated_data
+        order_items = validated_data.pop('order_items', [])
+        
+        # Create the order
         order = Order.objects.create(**validated_data)
         
-        # Calculate total price from order items after they're added
+        # Add order items
+        order.order_items.set(order_items)
+        
+        # Calculate total price from order items
         total_price = sum(item.total_price for item in order.order_items.all())
         order.total_price = total_price
         order.save()

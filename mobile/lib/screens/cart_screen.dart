@@ -9,6 +9,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final CartService _cartService = CartService();
+  final _addressController = TextEditingController();
   List<CartItem> _cartItems = [];
   bool _isLoading = false;
 
@@ -16,6 +17,12 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     _loadCart();
+  }
+
+  @override
+  void dispose() {
+    _addressController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadCart() async {
@@ -37,6 +44,47 @@ class _CartScreenState extends State<CartScreen> {
   double get totalAmount {
     return _cartItems.fold(0.0,
         (sum, item) => sum + (item.product.price * item.quantity));
+  }
+
+  Future<bool?> _showCheckoutDialog() async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delivery Address'),
+          content: TextField(
+            controller: _addressController,
+            decoration: InputDecoration(
+              hintText: 'Enter your delivery address',
+              border: OutlineInputBorder(),
+            ),
+            maxLines: 3,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _addressController.clear();
+              },
+            ),
+            TextButton(
+              child: Text('Confirm'),
+              onPressed: () async {
+                if (_addressController.text.trim().isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Please enter a delivery address')),
+                  );
+                  return;
+                }
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -221,24 +269,40 @@ class _CartScreenState extends State<CartScreen> {
                         onPressed: _cartItems.isEmpty
                             ? null
                             : () async {
-                                setState(() => _isLoading = true);
-                                try {
-                                  await _cartService.checkout();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text('Order placed successfully')),
-                                  );
-                                  await _loadCart(); // Refresh cart after checkout
-                                } catch (e) {
-                                  if (e.toString().contains('401')) {
-                                    Navigator.of(context).pushReplacementNamed('/login');
+                                final proceed = await _showCheckoutDialog();
+                                if (proceed == true) {
+                                  setState(() => _isLoading = true);
+                                  try {
+                                    // Get list of cart item IDs
+                                    final List<int> orderItemIds = _cartItems
+                                        .map((item) => item.id)
+                                        .toList();
+
+                                    await _cartService.checkout(
+                                      _addressController.text.trim(),
+                                      orderItemIds,
+                                    );
+
+                                    _addressController.clear();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Order placed successfully'),
+                                      ),
+                                    );
+                                    await _loadCart(); // Refresh cart after checkout
+                                  } catch (e) {
+                                    if (e.toString().contains('401')) {
+                                      Navigator.of(context)
+                                          .pushReplacementNamed('/login');
+                                    }
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Failed to place order'),
+                                      ),
+                                    );
+                                  } finally {
+                                    setState(() => _isLoading = false);
                                   }
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text('Failed to place order')),
-                                  );
-                                } finally {
-                                  setState(() => _isLoading = false);
                                 }
                               },
                         child: Text('Checkout'),

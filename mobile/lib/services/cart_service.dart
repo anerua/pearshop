@@ -70,9 +70,7 @@ class CartService {
       final response = await http.patch(
         Uri.parse('$baseUrl/order-item/$productId'),
         headers: {'Authorization': 'Bearer $token'},
-        body: {
-          'quantity': quantity.toString()
-        },
+        body: {'quantity': quantity.toString()},
       );
 
       if (response.statusCode == 401) {
@@ -84,18 +82,25 @@ class CartService {
     });
   }
 
-  Future<void> checkout() async {
+  Future<void> checkout(String address, List<int> cartItemIds) async {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
       final response = await http.post(
-        Uri.parse('$baseUrl/cart/checkout/'),
-        headers: {'Authorization': 'Bearer $token'},
+        Uri.parse('$baseUrl/order'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'delivery_address': address,
+          'order_item_ids': cartItemIds,
+        }),
       );
 
       if (response.statusCode == 401) {
         throw Exception('401 Authentication failed');
       }
-      if (response.statusCode != 200) {
+      if (response.statusCode != 201) {
         throw Exception('Failed to checkout');
       }
     });
