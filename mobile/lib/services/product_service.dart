@@ -11,7 +11,7 @@ class ProductService {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
       final response = await http.get(
-        Uri.parse('$baseUrl/product'),
+        Uri.parse('$baseUrl/product/'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
@@ -30,7 +30,7 @@ class ProductService {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
       final response = await http.get(
-        Uri.parse('$baseUrl/product/$id'),
+        Uri.parse('$baseUrl/product/$id/'),
         headers: {'Authorization': 'Bearer $token'},
       );
 

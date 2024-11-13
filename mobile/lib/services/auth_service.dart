@@ -9,7 +9,7 @@ class AuthService {
 
   Future<Map<String, String>> login(String username, String password) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/login'),
+      Uri.parse('$baseUrl/login/'),
       body: {
         'username': username,
         'password': password,
@@ -34,7 +34,7 @@ class AuthService {
 
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/token/refresh'),
+        Uri.parse('$baseUrl/token/refresh/'),
         body: {
           'refresh': refreshToken,
         },
@@ -76,7 +76,7 @@ class AuthService {
 
   Future<Map<String, String>> signup(String username, String password) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/register'),
+      Uri.parse('$baseUrl/register/'),
       body: {
         'username': username,
         'password': password,

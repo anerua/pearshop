@@ -11,7 +11,7 @@ class CartService {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
       final response = await http.get(
-        Uri.parse('$baseUrl/order-item'),
+        Uri.parse('$baseUrl/order-item/'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
@@ -30,7 +30,7 @@ class CartService {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
       final response = await http.post(
-        Uri.parse('$baseUrl/order-item'),
+        Uri.parse('$baseUrl/order-item/'),
         headers: {'Authorization': 'Bearer $token'},
         body: {
           'product_id': productId.toString(),
@@ -51,7 +51,7 @@ class CartService {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
       final response = await http.delete(
-        Uri.parse('$baseUrl/order-item/$productId'),
+        Uri.parse('$baseUrl/order-item/$productId/'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
@@ -68,7 +68,7 @@ class CartService {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
       final response = await http.patch(
-        Uri.parse('$baseUrl/order-item/$productId'),
+        Uri.parse('$baseUrl/order-item/$productId/'),
         headers: {'Authorization': 'Bearer $token'},
         body: {'quantity': quantity.toString()},
       );
@@ -86,7 +86,7 @@ class CartService {
     return await _authService.authenticatedRequest(() async {
       final token = await _authService.getAccessToken();
       final response = await http.post(
-        Uri.parse('$baseUrl/order'),
+        Uri.parse('$baseUrl/order/'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',

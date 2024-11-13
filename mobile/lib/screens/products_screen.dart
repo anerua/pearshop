@@ -57,13 +57,40 @@ class _ProductsScreenState extends State<ProductsScreen> {
             icon: Icon(Icons.shopping_cart),
             onPressed: () => Navigator.pushNamed(context, '/cart'),
           ),
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () async {
-              await _authService.logout();
-              Navigator.pushReplacementNamed(context, '/login');
-            },
+          PopupMenuButton(
+            icon: CircleAvatar(
+              child: Icon(Icons.person),
+              backgroundColor: Theme.of(context).primaryColorLight,
+            ),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: ListTile(
+                  leading: Icon(Icons.history),
+                  title: Text('Order History'),
+                  dense: true,
+                ),
+                onTap: () {
+                  // Need to delay navigation because of PopupMenuButton's built-in navigation
+                  Future.delayed(
+                    Duration.zero,
+                    () => Navigator.pushNamed(context, '/order-history'),
+                  );
+                },
+              ),
+              PopupMenuItem(
+                child: ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text('Sign Out'),
+                  dense: true,
+                ),
+                onTap: () async {
+                  await _authService.logout();
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+              ),
+            ],
           ),
+          SizedBox(width: 8),
         ],
       ),
       body: GridView.builder(
@@ -110,7 +137,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text('\$${_products[i].price.toStringAsFixed(2)}'),
+                      Text('${_products[i].price.toStringAsFixed(2)} NGN'),
                       ElevatedButton(
                         child: Text('Add to Cart'),
                         onPressed: () async {
@@ -121,7 +148,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             );
                           } catch (e) {
                             if (e.toString().contains('401')) {
-                              Navigator.of(context).pushReplacementNamed('/login');
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/login');
                             }
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Failed to add to cart')),

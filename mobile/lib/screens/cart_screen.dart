@@ -42,8 +42,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   double get totalAmount {
-    return _cartItems.fold(0.0,
-        (sum, item) => sum + (item.product.price * item.quantity));
+    return _cartItems.fold(
+        0.0, (sum, item) => sum + (item.product.price * item.quantity));
   }
 
   Future<bool?> _showCheckoutDialog() async {
@@ -100,7 +100,8 @@ class _CartScreenState extends State<CartScreen> {
                 Expanded(
                   child: ListView.builder(
                     itemCount: _cartItems.length,
-                    itemBuilder: (ctx, i) => Dismissible(  // swipe-to-delete
+                    itemBuilder: (ctx, i) => Dismissible(
+                      // swipe-to-delete
                       key: Key(_cartItems[i].id.toString()),
                       direction: DismissDirection.endToStart,
                       background: Container(
@@ -121,7 +122,8 @@ class _CartScreenState extends State<CartScreen> {
                           await _cartService.removeFromCart(removedItem.id);
                         } catch (e) {
                           if (e.toString().contains('401')) {
-                            Navigator.of(context).pushReplacementNamed('/login');
+                            Navigator.of(context)
+                                .pushReplacementNamed('/login');
                           }
                           setState(() {
                             _cartItems.insert(i, removedItem);
@@ -138,13 +140,15 @@ class _CartScreenState extends State<CartScreen> {
                             _cartItems[i].product.image ??
                                 'assets/images/placeholder.png',
                             width: 50,
-                            errorBuilder: (ctx, error, _) =>
-                                Image.asset('assets/images/placeholder.png', width: 50),
+                            errorBuilder: (ctx, error, _) => Image.asset(
+                                'assets/images/placeholder.png',
+                                width: 50),
                           ),
                           title: Text(_cartItems[i].product.name),
                           subtitle: Row(
                             children: [
-                              Text('\$${_cartItems[i].product.price.toStringAsFixed(2)}'),
+                              Text(
+                                  '${_cartItems[i].product.price.toStringAsFixed(2)} NGN'),
                               Spacer(),
                               // Quantity controls
                               IconButton(
@@ -163,10 +167,11 @@ class _CartScreenState extends State<CartScreen> {
                                             Navigator.of(context)
                                                 .pushReplacementNamed('/login');
                                           }
-                                          ScaffoldMessenger.of(context).showSnackBar(
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
                                             SnackBar(
-                                                content:
-                                                    Text('Failed to update quantity')),
+                                                content: Text(
+                                                    'Failed to update quantity')),
                                           );
                                         } finally {
                                           setState(() => _isLoading = false);
@@ -195,7 +200,8 @@ class _CartScreenState extends State<CartScreen> {
                                     }
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                          content: Text('Failed to update quantity')),
+                                          content: Text(
+                                              'Failed to update quantity')),
                                     );
                                   } finally {
                                     setState(() => _isLoading = false);
@@ -208,7 +214,7 @@ class _CartScreenState extends State<CartScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                '\$${(_cartItems[i].product.price * _cartItems[i].quantity).toStringAsFixed(2)}',
+                                '${(_cartItems[i].product.price * _cartItems[i].quantity).toStringAsFixed(2)} NGN',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -219,7 +225,8 @@ class _CartScreenState extends State<CartScreen> {
                                 onPressed: () async {
                                   try {
                                     setState(() => _isLoading = true);
-                                    await _cartService.removeFromCart(_cartItems[i].id);
+                                    await _cartService
+                                        .removeFromCart(_cartItems[i].id);
                                     await _loadCart();
                                   } catch (e) {
                                     if (e.toString().contains('401')) {
@@ -227,7 +234,9 @@ class _CartScreenState extends State<CartScreen> {
                                           .pushReplacementNamed('/login');
                                     }
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('Failed to remove item')),
+                                      SnackBar(
+                                          content:
+                                              Text('Failed to remove item')),
                                     );
                                   } finally {
                                     setState(() => _isLoading = false);
@@ -256,7 +265,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                           Text(
-                            '\$${totalAmount.toStringAsFixed(2)}',
+                            '${totalAmount.toStringAsFixed(2)} NGN',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -286,7 +295,8 @@ class _CartScreenState extends State<CartScreen> {
                                     _addressController.clear();
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('Order placed successfully'),
+                                        content:
+                                            Text('Order placed successfully'),
                                       ),
                                     );
                                     await _loadCart(); // Refresh cart after checkout
