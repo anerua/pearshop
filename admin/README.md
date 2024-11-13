@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PearShop Admin Interface
 
-## Getting Started
+A Next.js-based admin interface for managing the PearShop e-commerce platform. This interface provides administrators with tools to manage products, view orders, and monitor the platform.
 
-First, run the development server:
+## Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18.20 or later
+- npm 10.8 or later
+- Access to PearShop Backend API
+
+## Setup Instructions
+
+1. **Clone the repository**
+
+```
+git clone https://github.com/anerua/pearshop.git
+```
+```
+cd admin
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Environment Setup**
 
-## Learn More
+Create a `.env` file at the root of the admin directory with the .env provided
 
-To learn more about Next.js, take a look at the following resources:
+4. **Run development server**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The admin interface will be available at `http://localhost:3000`
 
-## Deploy on Vercel
+## Pages
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `/` - Login page
+- `/dashboard` - Main dashboard
+- `/products` - Product management
+- `/orders` - Order management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Authentication
+
+The interface uses JWT authentication with the PearShop API. Tokens are stored securely and automatically refreshed when needed.
+
+
+## Available Scripts
+
+### Development
+```
+npm run dev
+```
+
+### Build
+```
+npm run build
+```
+
+### Production
+```
+npm run start
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details

@@ -1,16 +1,89 @@
-# mobile
+# PearShop Mobile App
 
-A new Flutter project.
+A Flutter-based mobile application for the PearShop e-commerce platform. This app allows users to browse products, manage their shopping cart, and track their orders.
 
-## Getting Started
+## Prerequisites
 
-This project is a starting point for a Flutter application.
+- Flutter SDK (3.20.0 or higher)
+- Dart SDK (3.5 or higher)
+- Android Studio / Xcode
+- Access to PearShop Backend API
 
-A few resources to get you started if this is your first Flutter project:
+## Setup Instructions
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. **Clone the repository**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+git clone https://github.com/anerua/pearshop.git
+```
+```
+cd mobile
+```
+
+2. **Install dependencies**
+
+```
+flutter pub get
+```
+
+3. **Environment Setup**
+
+Create a `.env` file at the root of the mobile directory with the .env provided
+
+4. **Run the app**
+```
+flutter run
+```
+
+## Screens
+
+### Authentication
+- `LoginScreen` - User login and registration
+
+### Shopping
+- `ProductsScreen` - Browse available products
+- `ProductDetailScreen` - View product details
+- `CartScreen` - Manage shopping cart
+- `OrderHistoryScreen` - View order history
+
+## Features in Detail
+
+### Shopping Cart
+- Add/remove products to/from cart
+- Adjust quantities
+- Swipe-to-delete functionality
+
+### Order Management
+- Place new orders
+- View order history
+- Add delivery address
+
+## Development
+
+### Running in Development
+
+```
+flutter run
+```
+
+### Building for Release
+
+#### Android
+```
+flutter build apk
+```
+
+#### iOS
+```
+flutter build ios
+```
+
+### Running Tests
+
+```
+flutter test
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details
