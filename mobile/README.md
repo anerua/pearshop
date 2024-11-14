@@ -28,7 +28,9 @@ flutter pub get
 
 3. **Environment Setup**
 
-Create a `.env` file at the root of the mobile directory with the .env provided
+Create a `.env` file at the root of the mobile directory with the .env provided.
+
+**NOTE:** For Android, set the `API_BASE_URL` to `http://10.0.2.2:8000/api` if you are running the Android emulator and the API on the same machine. For iOS, set the `API_BASE_URL` to `http://localhost:8000/api` or `http://127.0.0.1:8000/api` if you are running the iOS simulator and the API on the same machine.
 
 4. **Run the app**
 ```
